@@ -191,11 +191,68 @@
 \end{frame}
 
 \begin{frame}{Copy and move}
-  \textcolor{blue}{\textbf{Initialization without constructors}}
   \begin{itemize}
-      \item Memberwise initialization (if we can access the members)
-      \item Copy initialization
-      \item Default initialization
+      \item A move can not throw where copy might
+      \item When you write a move operation, you should leave the soure object in a valid state because it will eventually be destroyed and destructor can not destroy an object left in an invalid state.
   \end{itemize}
 \end{frame}
+
+\begin{frame}{Copy}
+  \textcolor{blue}{\textbf{Copy for a class X is defined by two operation}}
+  \begin{itemize}
+      \item Copy constructor: X(const X&)
+      \item Copy assignment: X& operator=(const X&)
+      \item A copy constructor initializes uninitialized memory, whereas the copy assignment operator must deal with an object that has already been constructed and may own resources.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Default constructor}
+  \begin{itemize}
+      \item When writing a copy operation, be sure to copy every base and member.
+      \item To copy an object of a derived class you have to copy its base.
+      \item A default copy constructor will corectly copy it with virtual base.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{The meaning of copy}
+  \begin{itemize}
+      \item Equivalence and independence
+      \item Be aware of shallow copy
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Slicing}
+  \begin{itemize}
+      \item It may happend when passing a derived object to function (based argument).
+      \item To prevent slicing: prohibit copying of the base class (delete copy operation), prevent conversion of a pointer to a derived to a pointer to a base: make the base class a private or protected.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Move}
+  \textcolor{blue}{\textbf{Many objects in computer resemble physical objects which we dont copy without need and only at considerable cost.}}
+  \begin{itemize}
+      \item locks, sockets, file handles, thread, long string, large vector
+      \item Using move constructor (X(const X&&)) or move assignment (X& operator=(X&&))
+      \item Copy constructor takes lvalue (X&) and move constructor takes rvalue (X&&)
+      \item move constructor and move assigment take non-const (rvalue) reference argument
+      \item move operations do not throw exceptions, do not acquire resources
+      \item std::move(x) means "give me an rvalue reference to x"
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Generating default operations}
+  \textcolor{blue}{\textbf{Writing conventional operations (copy, destructor) can be tedious and error-prone so the compiler can generate them}}
+\begin{itemize}
+\item a default constructor
+\item a copy constructor
+\item a copy assignment
+\item a move constructor
+\item a move assignment
+\item a destructor
+\end{itemize}
+\textcolor{blue}{\textbf{If the programmer declares any constructor, the default constructor is not generated}}
+\textcolor{blue}{\textbf{If the programmer declares a copy operation, a move operation or a destructor, no copy, move, destructor operations are generated}}
+\textcolor{blue}{\textbf{Since the generation of otherwise default operations can be suppressed, there has to be way getting back a default. Using default}}
+\end{frame}
+
 \end{document}
